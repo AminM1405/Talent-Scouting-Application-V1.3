@@ -1,0 +1,6 @@
+{
+  "summary":  "Rencana implementasi aplikasi ITDF (Integrated Talent Discovery Framework) Mobile-First dengan integrasi Firebase Firestore, ekspor CSV real-time, pencarian & filter data, validasi formulir ketat, dashboard ringkasan statistik, dan cetak ekspor PDF formal.",
+  "updatedAt":  "2026-11-11T09:02:21.400555829Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}

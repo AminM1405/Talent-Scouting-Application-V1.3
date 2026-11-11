@@ -1,0 +1,110 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "Informasi biodata siswa untuk pendataan asesmen bakat",
+      "type": "object",
+      "properties": {
+        "student_code": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 80,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Kode unik identitas siswa"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 160,
+          "description": "Nama lengkap siswa"
+        },
+        "school": {
+          "type": "string",
+          "maxLength": 180,
+          "description": "Nama sekolah asal"
+        },
+        "grade": {
+          "type": "string",
+          "enum": ["X", "XI", "XII"],
+          "description": "Jenjang kelas siswa"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "Waktu pembuatan data format ISO"
+        }
+      },
+      "required": ["student_code", "name"]
+    },
+    "Assessment": {
+      "title": "Assessment",
+      "description": "Hasil asesmen 8 domain ITDF yang telah dihitung beserta respons butir",
+      "type": "object",
+      "properties": {
+        "student_code": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 80,
+          "description": "Kode identitas siswa yang terdaftar"
+        },
+        "student_name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 160,
+          "description": "Nama lengkap siswa"
+        },
+        "school": {
+          "type": "string",
+          "maxLength": 180,
+          "description": "Nama sekolah asal"
+        },
+        "grade": {
+          "type": "string",
+          "enum": ["X", "XI", "XII"],
+          "description": "Jenjang kelas siswa"
+        },
+        "aspiration": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Bidang atau karier yang ingin dieksplorasi siswa"
+        },
+        "scores": {
+          "type": "object",
+          "description": "Nilai rata-rata respons 8 domain skala 1-5"
+        },
+        "answers": {
+          "type": "object",
+          "description": "Pilihan respons 48 butir skala Likert 1-5"
+        },
+        "top_domain": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Nama domain dengan skor tertinggi"
+        },
+        "top_score": {
+          "type": "number",
+          "description": "Skor tertinggi asesmen"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Ringkasan interpretasi awal"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "Waktu pelaksanaan asesmen format ISO"
+        }
+      },
+      "required": ["student_code", "student_name", "scores"]
+    }
+  },
+  "firestore": {
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Koleksi data master siswa terdaftar"
+    },
+    "/assessments/{assessmentId}": {
+      "schema": "Assessment",
+      "description": "Koleksi hasil asesmen ITDF dan skor yang masuk"
+    }
+  }
+}

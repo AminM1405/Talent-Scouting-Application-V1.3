@@ -1,0 +1,6 @@
+{
+  "name": "ITDF Mobile - Asesmen & Pendataan Siswa",
+  "description": "Aplikasi pendataan dan asesmen bakat/minat siswa Integrated Talent Discovery Framework (ITDF) dengan Firebase Firestore, pencarian, ekspor CSV, dan laporan PDF.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidStudent(data) {
+      return data.student_code is string &&
+             data.student_code.size() >= 3 &&
+             data.student_code.size() <= 80 &&
+             data.name is string &&
+             data.name.size() >= 2 &&
+             data.name.size() <= 160 &&
+             (!('school' in data) || (data.school is string && data.school.size() <= 180)) &&
+             (!('grade' in data) || (data.grade in ['X', 'XI', 'XII'])) &&
+             (!('created_at' in data) || (data.created_at is string && data.created_at.size() <= 60));
+    }
+
+    function isValidAssessment(data) {
+      return data.student_code is string &&
+             data.student_code.size() >= 3 &&
+             data.student_code.size() <= 80 &&
+             data.student_name is string &&
+             data.student_name.size() >= 2 &&
+             data.student_name.size() <= 160 &&
+             data.scores is map &&
+             (!('school' in data) || (data.school is string && data.school.size() <= 180)) &&
+             (!('grade' in data) || (data.grade in ['X', 'XI', 'XII'])) &&
+             (!('aspiration' in data) || (data.aspiration is string && data.aspiration.size() <= 300)) &&
+             (!('top_domain' in data) || (data.top_domain is string && data.top_domain.size() <= 100)) &&
+             (!('top_score' in data) || (data.top_score is number)) &&
+             (!('summary' in data) || (data.summary is string && data.summary.size() <= 1000)) &&
+             (!('created_at' in data) || (data.created_at is string && data.created_at.size() <= 60));
+    }
+
+    // Koleksi data siswa (pendataan terbuka tanpa login)
+    match /students/{studentId} {
+      allow read, list: if true;
+      allow create: if isValidId(studentId) && isValidStudent(incoming());
+      allow update, delete: if false;
+    }
+
+    // Koleksi hasil asesmen (pendataan terbuka tanpa login)
+    match /assessments/{assessmentId} {
+      allow read, list: if true;
+      allow create: if isValidId(assessmentId) && isValidAssessment(incoming());
+      allow update, delete: if false;
+    }
+  }
+}
